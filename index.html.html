@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Signature Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 1300px;
+      margin: auto;
+    }
+    .form-section, .preview-section {
+      background: white;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 48%;
+    }
+    .form-section input, .form-section textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .form-section textarea {
+      height: 100px;
+    }
+    .form-section .full-width {
+      width: 100%;
+    }
+    .form-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .copy-button, .generate-button {
+      padding: 10px;
+      font-size: 16px;
+      width: 48%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .copy-button {
+      background-color: #4f6f18;
+      color: white;
+      border: none
+    }
+    .copy-button:hover {
+      background-color: #3d5b14;
+    }
+    .generate-button {
+      background-color: #2a9df4;
+      color: white;
+      border: none
+    }
+    .generate-button:hover {
+      background-color: #2388c8;
+    }
+    .email-signature-wrapper {
+      background: white;
+      padding: 20px;
+      font-size: 13px;
+      color: black;
+      overflow-x: auto;
+    }
+    .email-signature-wrapper table {
+      width: 100%;
+    }
+    .email-signature-wrapper td {
+      vertical-align: top;
+    }
+    .social-icons {
+  margin: 20px 0px;
+  text-align: left;
+  font-size: 0; /* Removes extra spacing from inline-block */
+}
+
+.social-heading {
+  color: #4f6f18;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.social-icons a {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px; /* Manual spacing between icons */
+}
+
+.social-icons a img {
+  background: #4f6f18;
+  border-radius: 50%;
+  padding: 5px;
+  width: 15px;
+  height: 15px;
+}
+    .we-stand {
+      color: #4f6f18;
+      font-size: 22px;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+    .disclaimer {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+      margin-top: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    ul li {
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      line-height: 30px;
+    }
+    ul li img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+    .contact-text a {
+      text-decoration: none;
+      color: black;
+    }
+    .social-heading {
+      margin-right: 10px;
+      font-weight: bold;
+      color: #4f6f18;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Form Section -->
+  <div class="form-section">
+    <h2>Fill Your Details</h2>
+    <form id="signature-form">
+      <label>Profile Picture URL:</label>
+      <input type="text" id="profile-picture-url" placeholder="Enter Profile Picture URL">
+      <label>Name:</label>
+      <input type="text" id="name" placeholder="Enter Your Name">
+      <label>Designation:</label>
+      <input type="text" id="designation" placeholder="Enter Your Designation">
+      <label>Phone:</label>
+      <input type="text" id="phone" placeholder="Enter Your Phone Number">
+      <label>Email:</label>
+      <input type="email" id="email" placeholder="Enter Your Email">
+      <label>Location:</label>
+      <textarea id="location" placeholder="Enter Your Location"></textarea>
+      <label>Website:</label>
+      <input type="text" id="website" placeholder="Enter Your Website URL">
+      <label>Facebook URL:</label>
+      <input type="text" id="facebook" placeholder="Enter Facebook URL">
+      <label>Instagram URL:</label>
+      <input type="text" id="instagram" placeholder="Enter Instagram URL">
+      <label>LinkedIn URL:</label>
+      <input type="text" id="linkedin" placeholder="Enter LinkedIn URL">
+      <label>YouTube URL:</label>
+      <input type="text" id="youtube" placeholder="Enter YouTube URL" class="full-width">
+      <div class="form-buttons">
+        <button type="button" class="copy-button" onclick="copySignature()">Copy HTML Signature</button>
+        <button type="button" class="generate-button" onclick="generateNewSignature()">Generate New Signature</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Preview Section -->
+  <div class="preview-section">
+    <div class="email-signature-wrapper" id="email-signature-preview">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="width: 110px; text-align: center;">
+            <img id="profile-picture" src="" alt="Profile Picture" style="height: 140px;"><br><br><br>
+            <img src="https://www.famatechnologies.com/wp-content/uploads/2025/04/Official-logo-English-01-e1745391802720.png" alt="Bottom Logo" style="height: 60px;">
+          </td>
+          <td style="width: 110px; text-align: center;">
+            <img src="https://www.famatechnologies.com/wp-content/uploads/2025/04/lining-e1745395112862-1.png" alt="Main Logo" style="height: 230px; width: auto;">
+          </td>
+          <td>
+            <strong id="name-preview" style="color: #4f6f18; font-size: 16px;"></strong><br>
+            <span id="designation-preview" style="color: #4f6f18;"></span><br><br>
+            <ul>
+              <li><img src="https://img.icons8.com/ios-filled/50/4f6f18/phone.png"><div class="contact-text"><a href="#" id="phone-preview"></a></div></li>
+              <li><img src="https://img.icons8.com/ios-filled/50/4f6f18/email.png"><div class="contact-text"><a href="#" id="email-preview"></a></div></li>
+              <li><img src="https://img.icons8.com/ios-filled/50/4f6f18/marker.png"><div class="contact-text" id="location-preview"></div></li>
+              <li><img src="https://img.icons8.com/ios-filled/50/4f6f18/internet.png"><div class="contact-text"><a href="#" id="website-preview"></a></div></li>
+            </ul>
+            <div class="social-icons">
+              <span class="social-heading">Join Us On:</span>
+              <a href="#" id="facebook-preview"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook"></a>
+              <a href="#" id="instagram-preview"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram"></a>
+              <a href="#" id="linkedin-preview"><img src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png" alt="LinkedIn"></a>
+              <a href="#" id="youtube-preview"><img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube"></a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="padding:10px 5px;">
+            <table cellpadding="0" cellspacing="0" border="0" style="text-align:left;">
+              <tr>
+                <td style="vertical-align: middle; padding-right: 10px;">
+                  <div class="we-stand">We<br>Stand<br>With</div>
+                </td>
+                <td style="vertical-align: middle;">
+                  <img src="https://www.famatechnologies.com/wp-content/uploads/2025/04/All-icons-07.png" style="height: 70px;" alt="Support Icons">
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="disclaimer">
+            This email is sent on behalf of FAMA Technologies, a subsidiary of the FAMA Holding Group. The views and opinions expressed in this message are those of the author and do not necessarily reflect the official policy or position of FAMA Holding Group or any of its subsidiaries.<br><br>
+            This email and any attached files may contain confidential, privileged, or copyrighted information intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please be advised that any review, dissemination, distribution, or duplication of this communication is strictly prohibited.<br><br>
+            If you have received this message in error, kindly notify the sender immediately by replying to this email and permanently delete this message and any attachments from your system.<br><br>
+            Please consider the environment before printing this email.
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Form live update
+  const form = document.getElementById('signature-form');
+  form.addEventListener('input', function() {
+    document.getElementById('profile-picture').src = document.getElementById('profile-picture-url').value || '';
+    document.getElementById('name-preview').textContent = document.getElementById('name').value || '';
+    document.getElementById('designation-preview').textContent = document.getElementById('designation').value || '';
+    document.getElementById('phone-preview').textContent = document.getElementById('phone').value || '';
+    document.getElementById('email-preview').textContent = document.getElementById('email').value || '';
+    document.getElementById('location-preview').textContent = document.getElementById('location').value || '';
+    document.getElementById('website-preview').textContent = document.getElementById('website').value || '';
+    document.getElementById('phone-preview').href = 'tel:' + document.getElementById('phone').value;
+    document.getElementById('email-preview').href = 'mailto:' + document.getElementById('email').value;
+    document.getElementById('website-preview').href = document.getElementById('website').value || '#';
+    document.getElementById('facebook-preview').href = document.getElementById('facebook').value || '#';
+    document.getElementById('instagram-preview').href = document.getElementById('instagram').value || '#';
+    document.getElementById('linkedin-preview').href = document.getElementById('linkedin').value || '#';
+    document.getElementById('youtube-preview').href = document.getElementById('youtube').value || '#';
+  });
+  
+  // Copy HTML Signature
+  function copySignature() {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('email-signature-preview'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    alert('Signature copied to clipboard!');
+  }
+  
+  // Generate New Signature (reset the form and preview)
+  function generateNewSignature() {
+    // Reset the form fields
+    form.reset();
+    
+    // Reset the preview to default values
+    document.getElementById('profile-picture').src = '';
+    document.getElementById('name-preview').textContent = '';
+    document.getElementById('designation-preview').textContent = '';
+    document.getElementById('phone-preview').textContent = '';
+    document.getElementById('email-preview').textContent = '';
+    document.getElementById('location-preview').textContent = '';
+    document.getElementById('website-preview').textContent = '';
+    document.getElementById('phone-preview').href = '#';
+    document.getElementById('email-preview').href = '#';
+    document.getElementById('website-preview').href = '#';
+    document.getElementById('facebook-preview').href = '#';
+    document.getElementById('instagram-preview').href = '#';
+    document.getElementById('linkedin-preview').href = '#';
+    document.getElementById('youtube-preview').href = '#';
+    
+    // Optionally reset the profile picture to a default image
+    document.getElementById('profile-picture').src = 'https://via.placeholder.com/140';
+  }
+  </script>
+  
+</body>
+</html>
